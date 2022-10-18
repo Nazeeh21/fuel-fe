@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "@fuel-ui/react";
+import Wrapper from "./components/Wrapper/Wrapper";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider>
+      <Wrapper>
       <App />
+      </Wrapper>
     </ThemeProvider>
   </React.StrictMode>
 );
