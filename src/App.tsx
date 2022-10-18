@@ -24,10 +24,8 @@ function App() {
     );
 
     try {
-      const bal = await wallet.getBalance();
-      console.log("balance", bal);
       const res = (
-        await wallet.transfer(address, 0.001, undefined, {
+        await wallet.transfer(address, 0.001, '0x00001', {
           gasLimit: 1000000,
         })
       ).wait();

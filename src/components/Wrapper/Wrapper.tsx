@@ -19,7 +19,6 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
       setAddress(wallet.address);
       const balance = await wallet.getBalance();
       setBalance(+balance.toString() / 1000000000);
-      console.log("balance");
     };
     getBalance();
   }, []);
@@ -32,6 +31,7 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
           alignItems: "center",
           margin: "1rem",
         }}
+        gap={5}
       >
         {address && (
           <Flex
@@ -60,6 +60,7 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
             padding: "0.5rem",
             paddingLeft: "1rem",
             paddingRight: "1rem",
+            justifyContent: "space-between",
           }}
         >
           <Text css={{ fontWeight: "$extrabold" }}>Your Balance: </Text>
