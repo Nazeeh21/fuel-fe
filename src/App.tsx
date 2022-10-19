@@ -7,33 +7,25 @@ import {
   Heading,
   Input,
   Stack,
-  Text
+  Text,
+  toast
 } from "@fuel-ui/react";
-import { Address, Wallet } from "fuels";
+import { useMachine } from "@xstate/react";
+import { useEffect } from "react";
 import "./App.css";
+import { sendTransactionMachine } from "./states/sendTransaction";
 
 function App() {
-  const sendTransaction = async () => {
-    const PVT_KEY = localStorage.getItem("wallet_pvtKey");
-    const wallet = new Wallet(
-      PVT_KEY as string,
-      "https://node-beta-1.fuel.network/graphql"
-    );
-    const address = new Address(
-      "fuel1dxm9d4wmlgm5jg62f9f3ngq9e5lvej26mh8zscp6s020f4k9j4nsr5yj6e"
-    );
-
-    try {
-      const res = (
-        await wallet.transfer(address, 0.001, undefined, {
-          gasLimit: 1000000,
-        })
-      ).wait();
-      console.log("res:", res);
-    } catch (error) {
-      console.log("error:", error);
-    }
+  const [transactionState, sendTransaction] = useMachine(sendTransactionMachine);
+  const handleOnSend = () => {
+    sendTransaction("SEND_TRANSACTION");
   };
+
+  useEffect(() => {
+    if(transactionState.matches("rejected")) {
+      toast.error("error while sending the transaction", {position: 'top-center'});
+    }
+  }, [transactionState])
 
   return (
     <>
@@ -95,11 +87,12 @@ function App() {
           >
             <Button
               color="accent"
-              onPress={sendTransaction}
+              onPress={handleOnSend}
               size="lg"
+              isLoading={transactionState.matches("loading")}
               aria-label="Swap button"
             >
-              Send
+              {transactionState.matches("loading") ? "Loading..." : "Send"}
             </Button>
           </Box>
         </Card>

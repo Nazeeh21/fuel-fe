@@ -2,7 +2,7 @@ import { Copyable, Flex, Grid, Text } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { AbstractAddress, Wallet } from "fuels";
 import React, { useEffect, useState } from "react";
-import { getBalanceMachine } from "../../states";
+import { getBalanceMachine } from "../../states/getBalanceMachine";
 
 const Wrapper = ({ children }: { children: React.ReactElement }) => {
   const [address, setAddress] = useState<AbstractAddress>();
@@ -25,7 +25,7 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
     };
     getBalance();
   }, [sendToMachine]);
-  
+
   return (
     <>
       <Grid

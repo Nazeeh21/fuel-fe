@@ -1,7 +1,6 @@
 import { assign, createMachine } from "xstate";
 import { fetchBalance } from "../api/fetchBalance";
 
-
 export const getBalanceMachine = createMachine({
   id: "getBalance",
   initial: "idle",
@@ -25,7 +24,12 @@ export const getBalanceMachine = createMachine({
             balance: (_, event) => event.data,
           }),
         },
-        onError: "rejected",
+        onError: {
+          target: "rejected",
+          actions: assign({
+            error: (_, event) => event.data,
+          }),
+        },
         on: {
           CANCEL: "idle ",
         },
