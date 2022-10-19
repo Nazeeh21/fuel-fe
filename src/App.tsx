@@ -25,7 +25,7 @@ function App() {
 
     try {
       const res = (
-        await wallet.transfer(address, 0.001, '0x00001', {
+        await wallet.transfer(address, 0.001, undefined, {
           gasLimit: 1000000,
         })
       ).wait();
