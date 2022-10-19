@@ -17,6 +17,6 @@ export const sendTransaction = async (
       gasPrice: 1,
     })
   ).wait();
-  
+
   return res;
 };

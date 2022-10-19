@@ -13,7 +13,7 @@ root.render(
   <React.StrictMode>
     <ThemeProvider>
       <Wrapper>
-      <App />
+        <App />
       </Wrapper>
     </ThemeProvider>
   </React.StrictMode>
