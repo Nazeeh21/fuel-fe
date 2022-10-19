@@ -8,7 +8,7 @@ import {
   Input,
   Stack,
   Text,
-  toast
+  toast,
 } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { useEffect } from "react";
@@ -16,7 +16,6 @@ import "./App.css";
 import { sendTransactionMachine } from "./states/sendTransaction";
 
 function App() {
-
   const [transactionState, sendTransaction] = useMachine(
     sendTransactionMachine
   );
@@ -29,6 +28,13 @@ function App() {
       toast.error("error while sending the transaction", {
         position: "top-center",
       });
+    } else if (transactionState.matches("resolved")) {
+      toast.success("transaction successful!", {
+        position: "top-center",
+      });
+    }
+    else {
+      console.log(transactionState)
     }
   }, [transactionState]);
 
