@@ -12,16 +12,13 @@ import {
 } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { useEffect } from "react";
-import "./App.css";
 import { sendTransactionMachine } from "./states/sendTransaction";
+import { stackStyling } from "./styles/customStyles";
 
 function App() {
   const [transactionState, sendTransaction] = useMachine(
     sendTransactionMachine
   );
-  const handleOnSend = () => {
-    sendTransaction("SEND_TRANSACTION");
-  };
 
   useEffect(() => {
     if (transactionState.matches("rejected")) {
@@ -33,23 +30,11 @@ function App() {
         position: "top-center",
       });
     }
-    else {
-      console.log(transactionState)
-    }
   }, [transactionState]);
 
   return (
     <>
-      <Stack
-        css={{
-          maxW: "400px",
-          margin: "auto",
-          marginTop: "100px",
-          borderRadius: "0.75rem",
-          backgroundColor: "rgb(23 25 28 / 1)",
-          padding: "0.75rem",
-        }}
-      >
+      <Stack css={stackStyling}>
         <Card>
           <Card.Header>
             <Heading
@@ -112,7 +97,7 @@ function App() {
           >
             <Button
               color="accent"
-              onPress={handleOnSend}
+              onPress={() => sendTransaction("SEND_TRANSACTION")}
               size="lg"
               isLoading={transactionState.matches("loading")}
               aria-label="Swap button"

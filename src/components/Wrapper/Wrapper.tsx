@@ -1,8 +1,9 @@
-import { Copyable, Flex, Grid, Text } from "@fuel-ui/react";
+import { Copyable, Flex, Grid, Text, toast } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { AbstractAddress, Wallet } from "fuels";
 import React, { useEffect, useState } from "react";
 import { getBalanceMachine } from "../../states/getBalanceMachine";
+import { flexStyling, gridStyling } from "../../styles/customStyles";
 
 const Wrapper = ({ children }: { children: React.ReactElement }) => {
   const [address, setAddress] = useState<AbstractAddress>();
@@ -28,45 +29,28 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
 
   return (
     <>
-      <Grid
-        css={{
-          flex: 1,
-          justifyContent: "flex-end",
-          alignItems: "center",
-          margin: "1rem",
-        }}
-        gap={5}
-      >
+      <Grid css={gridStyling} gap={5}>
         {address && (
-          <Flex
-            css={{
-              backgroundColor: "Black",
-              borderRadius: "$full",
-              padding: "0.5rem",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
-            }}
-          >
+          <Flex css={flexStyling}>
             <Text css={{ fontWeight: "$extrabold" }}>Your Address:</Text>
-            <Copyable value={address?.toString()}>
+            <Copyable
+              justify="space-between"
+              onClick={() => {
+                toast.success("Copied to clipboard!", {
+                  position: "bottom-right",
+                });
+              }}
+              value={address?.toString()}
+            >
               <Text css={{ marginLeft: "0.5rem" }}>
-                {address?.toString().slice(0, 4) +
+                {address?.toString().slice(0, 6) +
                   "..." +
                   address?.toString().slice(-3)}
               </Text>
             </Copyable>
           </Flex>
         )}
-        <Flex
-          css={{
-            backgroundColor: "Black",
-            borderRadius: "$full",
-            padding: "0.5rem",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-            justifyContent: "space-between",
-          }}
-        >
+        <Flex css={flexStyling}>
           <Text css={{ fontWeight: "$extrabold" }}>Your Balance: </Text>
           <Text css={{ marginLeft: "0.5rem" }}>
             {currentMachine.matches("loading") && "Loading..."}
