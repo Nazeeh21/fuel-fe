@@ -1,4 +1,4 @@
-import { Copyable, Flex, Grid, Text } from "@fuel-ui/react";
+import { Copyable, Flex, Grid, Text, Tooltip } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { Wallet } from "fuels";
 import React, { useEffect } from "react";
@@ -32,14 +32,14 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
         {address && (
           <Flex css={flexStyling}>
             <Text css={{ fontWeight: "$extrabold" }}>Your Address:</Text>
-            <Copyable
-              value={address?.toString()}
-            >
-              <Text css={{ marginLeft: "0.5rem" }}>
-                {address?.toString().slice(0, 6) +
-                  "..." +
-                  address?.toString().slice(-3)}
-              </Text>
+            <Copyable value={address?.toString()}>
+              <Tooltip content={address?.toString()}>
+                <Text css={{ marginLeft: "0.5rem" }}>
+                  {address?.toString().slice(0, 6) +
+                    "..." +
+                    address?.toString().slice(-3)}
+                </Text>
+              </Tooltip>
             </Copyable>
           </Flex>
         )}
