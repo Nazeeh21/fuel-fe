@@ -1,4 +1,4 @@
-import { Copyable, Flex, Grid, Text, toast } from "@fuel-ui/react";
+import { Copyable, Flex, Grid, Text } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { Wallet } from "fuels";
 import React, { useEffect } from "react";
@@ -33,11 +33,6 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
           <Flex css={flexStyling}>
             <Text css={{ fontWeight: "$extrabold" }}>Your Address:</Text>
             <Copyable
-              onClick={() => {
-                toast.success("Copied to clipboard!", {
-                  position: "bottom-right",
-                });
-              }}
               value={address?.toString()}
             >
               <Text css={{ marginLeft: "0.5rem" }}>
