@@ -1,10 +1,14 @@
 import { Copyable, Flex, Grid, Text } from "@fuel-ui/react";
+import { useMachine } from "@xstate/react";
 import { AbstractAddress, Wallet } from "fuels";
 import React, { useEffect, useState } from "react";
+import { getBalanceMachine } from "../../states";
 
 const Wrapper = ({ children }: { children: React.ReactElement }) => {
-  const [balance, setBalance] = useState<number>();
   const [address, setAddress] = useState<AbstractAddress>();
+
+  const [currentMachine, sendToMachine] = useMachine(getBalanceMachine);
+
   useEffect(() => {
     const getBalance = async () => {
       const PVT_KEY =
@@ -17,11 +21,11 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
       );
 
       setAddress(wallet.address);
-      const balance = await wallet.getBalance();
-      setBalance(+balance.toString() / 1000000000);
+      sendToMachine("GET_BALANCE");
     };
     getBalance();
-  }, []);
+  }, [sendToMachine]);
+  
   return (
     <>
       <Grid
@@ -64,7 +68,11 @@ const Wrapper = ({ children }: { children: React.ReactElement }) => {
           }}
         >
           <Text css={{ fontWeight: "$extrabold" }}>Your Balance: </Text>
-          <Text css={{ marginLeft: "0.5rem" }}>{balance} ETH</Text>
+          <Text css={{ marginLeft: "0.5rem" }}>
+            {currentMachine.matches("loading") && "Loading..."}
+            {currentMachine.matches("resolved") &&
+              currentMachine.context.balance + " Eth"}
+          </Text>
         </Flex>
       </Grid>
       {children}
