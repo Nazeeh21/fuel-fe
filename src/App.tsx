@@ -8,7 +8,7 @@ import {
   Input,
   Stack,
   Text,
-  toast
+  toast,
 } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { useEffect } from "react";
@@ -16,16 +16,20 @@ import "./App.css";
 import { sendTransactionMachine } from "./states/sendTransaction";
 
 function App() {
-  const [transactionState, sendTransaction] = useMachine(sendTransactionMachine);
+  const [transactionState, sendTransaction] = useMachine(
+    sendTransactionMachine
+  );
   const handleOnSend = () => {
     sendTransaction("SEND_TRANSACTION");
   };
 
   useEffect(() => {
-    if(transactionState.matches("rejected")) {
-      toast.error("error while sending the transaction", {position: 'top-center'});
+    if (transactionState.matches("rejected")) {
+      toast.error("error while sending the transaction", {
+        position: "top-center",
+      });
     }
-  }, [transactionState])
+  }, [transactionState]);
 
   return (
     <>
@@ -65,6 +69,13 @@ function App() {
                   name="address"
                   placeholder="Enter address"
                   type="text"
+                  onChange={(e) =>
+                    sendTransaction({
+                      type: "UPDATING_ADDRESS",
+                      address: e.target.value,
+                    })
+                  }
+                  value={transactionState.context.address}
                 />
               </Input>
             </Copyable>
@@ -74,6 +85,13 @@ function App() {
                 inputMode="decimal"
                 name="amount"
                 placeholder="0.0"
+                onChange={(e) =>
+                  sendTransaction({
+                    type: "UPDATING_AMOUNT",
+                    amount: e.target.value,
+                  })
+                }
+                value={transactionState.context.amount}
               />
             </Input>
           </Grid>
