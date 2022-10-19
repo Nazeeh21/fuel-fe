@@ -1,7 +1,14 @@
 import { assign, createMachine } from "xstate";
 import { sendTransaction } from "../api/sendTransaction";
 
-export const sendTransactionMachine = createMachine(
+interface SendTransactionContext {
+  res: any;
+  error: string | null;
+  address: string;
+  amount: number;
+}
+
+export const sendTransactionMachine = createMachine<SendTransactionContext>(
   {
     id: "transaction",
     initial: "idle",
@@ -15,8 +22,6 @@ export const sendTransactionMachine = createMachine(
       idle: {
         on: {
           SEND_TRANSACTION: "loading",
-          UPDATING_ADDRESS: { actions: "updatingAddress" },
-          UPDATING_AMOUNT: { actions: "updatingAmount" },
         },
       },
       loading: {
@@ -53,17 +58,18 @@ export const sendTransactionMachine = createMachine(
         },
       },
     },
-  },
-  {
-    actions: {
-      updatingAddress: assign((ctx, e) => ({
-        // @ts-expect-error
-        address: e.value,
-      })),
-      updatingAmount: assign((ctx, e) => ({
-        // @ts-expect-error
-        amount: e.value,
-      })),
+    on: {
+      UPDATING_ADDRESS: {
+        actions: assign({
+          address: (_, event) => event.value,
+        }),
+      },
+      UPDATING_AMOUNT: {
+        actions: assign({
+          amount: (_, event) => event.value,
+        }),
+      },
     },
-  }
+  },
+  
 );

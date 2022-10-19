@@ -8,7 +8,7 @@ import {
   Input,
   Stack,
   Text,
-  toast,
+  toast
 } from "@fuel-ui/react";
 import { useMachine } from "@xstate/react";
 import { useEffect } from "react";
@@ -16,6 +16,7 @@ import "./App.css";
 import { sendTransactionMachine } from "./states/sendTransaction";
 
 function App() {
+
   const [transactionState, sendTransaction] = useMachine(
     sendTransactionMachine
   );
@@ -63,7 +64,7 @@ function App() {
             }}
           >
             <Text>Enter the address you want to send ETH to:</Text>
-            <Copyable value="">
+            <Copyable value={transactionState.context.address}>
               <Input isFullWidth>
                 <Input.Field
                   name="address"
@@ -72,7 +73,7 @@ function App() {
                   onChange={(e) =>
                     sendTransaction({
                       type: "UPDATING_ADDRESS",
-                      address: e.target.value,
+                      value: e.target.value,
                     })
                   }
                   value={transactionState.context.address}
@@ -88,7 +89,7 @@ function App() {
                 onChange={(e) =>
                   sendTransaction({
                     type: "UPDATING_AMOUNT",
-                    amount: e.target.value,
+                    value: e.target.value,
                   })
                 }
                 value={transactionState.context.amount}
